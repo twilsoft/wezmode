@@ -1,7 +1,7 @@
 # Wezmode
 *Modal keybinds and prompts for wezterm*
 
->Note: I am not a lua dev, please feel free to suggest improvements.
+>NOTICE: All versions going forward (v2+) use a slightly updated config structure. Colors are now in a 'theme' object.
 
 ## What is it?
 A super simple set of helper methods (**plugin?**) to create custom "modes" using the `key_tables` functionality of wezterm.
@@ -11,16 +11,32 @@ Here's a few of my modes:
 ![pane mode](./screenshots/pane.png)
 ![resize mode](./screenshots/resize.png)
 
+## Table of Contents
+1. [Limitations](#limitations)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Advanced Usage](#advanced)
+    - [Config](#advanced.config)
+    - [Merging with existing keymaps](#advanced.merging)
+    - [Manually setting the status](#status)
+5. [Full config example](#config_example)
+
+<a name="limitations"/>
+
 ## Limitations
 Using this plugin, we decide on a modifier and a set of keys that will trigger certain modes.
 By default, `CTRL` is the modifier. There is currently no way to have different modes under different modifiers.
 
 There is currently no way to have nested modes. This feature is on the roadmap.
 
+<a name="installation"/>
+
 ## Installation
 To install this script, place [wezmode.lua from the latest release](https://github.com/twilsoft/wezmode/releases/latest) in your [wezterm config directory](https://wezfurlong.org/wezterm/config/files.html). This is usually `$HOME/.config/wezterm`
 
 Once the script is installed. Sweet nothing will happen. Let's move on to usage.
+
+<a name="usage"/>
 
 ## Usage
 ```lua
@@ -62,7 +78,12 @@ return {
 
 See the next section (Advanced usage) for more complex configurations.
 
+<a name="advanced"/>
+
 ## Advanced usage
+
+<a name="advanced.config"/>
+
 ### Config
 An optional config can be supplied as the second argument for `wezmode.setup`
 The default config is as follows:
@@ -70,10 +91,12 @@ The default config is as follows:
 {
   modifier = "CTRL", -- follows the same modifier syntax as wezterm key maps
   hintSeparator = "/", -- the character that separates each hint
-  normalModeColor = "red", -- the color to use for the normal mode indicator
-  hintColor = "green", -- the color to use for the key hints
-  modeTextColor = "black", -- the text color for the mode indicators
-  textColor = "white", -- the basic text color
+  theme = {
+    normalModeColor = "red", -- the color to use for the normal mode indicator
+    hintColor = "green", -- the color to use for the key hints
+    modeTextColor = "black", -- the text color for the mode indicators
+    textColor = "white", -- the basic text color
+  }
 }
 ```
 For example if we want to use `Ctrl & Alt` for our modifier:
@@ -85,6 +108,8 @@ wezmode.setup({
   modifier = "CTRL|ALT"
 })
 ```
+
+<a name="advanced.merging"/>
 
 ### Merging with existing keymaps
 By using only `wezmode.getKeys` and `wezmode.getKeyMaps` to set our keybinds, we are limited to using bindings only defined in our `wezmode.setup` call. To use other key maps we can use `wezmode.extendTable`.
@@ -103,6 +128,8 @@ return {
 }
 ```
 
+<a name="advanced.status"/>
+
 ### Manually setting the status
 If you want to get the text used in the status to set it manually we can use `wezmode.getModeText`.
 
@@ -115,6 +142,8 @@ end)
 
 This will behave the same as `wezmode.handleRightStatusUpdate` but allows us to extend the behavior or use the mode text in other ways.
 
+<a name="config_example"/>
+
 ## Full wezterm.lua config example
 ```lua
 local wezterm = require('wezterm')
@@ -124,10 +153,12 @@ local wezmode = require("wezmode")
 local resize_amount = 3;
 
 local wezmodeConfig = {
-  textColor = "white",
-  hintColor = "#a6e3a1",
-  normalModeColor = "#cba6f7",
-  modeTextColor = "#11111b",
+  theme = {
+    textColor = "white",
+    hintColor = "#a6e3a1",
+    normalModeColor = "#cba6f7",
+    modeTextColor = "#11111b",
+  }
 }
 
 wezmode.setup({
