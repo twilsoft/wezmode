@@ -1,0 +1,14 @@
+{
+  "name": "wezmode-ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts":{
+    "build": "tstl --luaBundle wezmode.lua --luaBundleEntry ./src/wm.ts -lt JIT --outDir ./dist/"
+  },
+  "devDependencies": {
+    "lua-types": "^2.13.0",
+    "typescript": "^4.8.4",
+    "typescript-to-lua": "^1.10.1"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "include": ["./src"],
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext"],
+    "moduleResolution": "node",
+    "types": [],
+    "strict": true,
+    "types": ["lua-types/jit", "./types/wezterm"],
+  },
+  "tstl": {
+    "luaTarget": "JIT",
+    "noImplicitSelf": true
+  }
+}
