@@ -1,7 +1,7 @@
 # Wezmode
 *Modal keybinds and prompts for wezterm*
 
->NOTICE: All versions going forward (v2+) use a slightly updated config structure. Colors are now in a 'theme' object.
+>NOTICE: I've since decided to take development of this plugin more seriously. As a result, please consider it to be pre-release. Things may (will) change. And they may (probably) break. I will treat version 3.0.0 as the first stable release to avoid changing the versions of older releases. For now, the docs below refer to version 2.
 
 ## What is it?
 A super simple set of helper methods (**plugin?**) to create custom "modes" using the `key_tables` functionality of wezterm.

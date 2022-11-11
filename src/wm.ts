@@ -1,4 +1,4 @@
-import type { Modifier, Key, KeyBind } from "wezterm";
+import type { Modifier, Key, KeyBind, FormatAttributeIntensity } from "wezterm";
 import * as wezterm from "wezterm";
 
 import { mergeObjects } from "./helpers";
@@ -21,6 +21,7 @@ type wezmodeOpts = {
   modifier: Modifier;
   hintSeparator: string;
   theme: {
+    intensity: FormatAttributeIntensity;
     normalModeColor: string;
     hintColor: string;
     modeTextColor: string;
@@ -44,6 +45,7 @@ const defaultOpts: wezmodeOpts = {
   modifier: "CTRL",
   hintSeparator: "/",
   theme: {
+    intensity: "Bold",
     normalModeColor: "red",
     hintColor: "green",
     modeTextColor: "black",
@@ -51,9 +53,13 @@ const defaultOpts: wezmodeOpts = {
   },
 };
 
-const createPrefixText = (prefix: string, textColor: string) => {
+const createPrefixText = (
+  prefix: string,
+  textColor: string,
+  intensity: FormatAttributeIntensity
+) => {
   return wezterm.format([
-    { Attribute: { Intensity: "Bold" } },
+    { Attribute: { Intensity: intensity } },
     { Foreground: { Color: textColor } },
     { Text: prefix },
   ]);
@@ -63,10 +69,11 @@ const createHintText = (
   key: Key,
   desc: string,
   hintColor: string,
-  textColor: string
+  textColor: string,
+  intensity: FormatAttributeIntensity
 ) => {
   return wezterm.format([
-    { Attribute: { Intensity: "Bold" } },
+    { Attribute: { Intensity: intensity } },
     { Foreground: { Color: textColor } },
     { Text: "<" },
     { Foreground: { Color: hintColor } },
@@ -76,12 +83,20 @@ const createHintText = (
   ]);
 };
 
-const createModeText = (name: string, textColor: string, modeColor: string) => {
+const createModeText = (
+  name: string,
+  textColor: string,
+  modeColor: string,
+  intensity: FormatAttributeIntensity
+) => {
   return wezterm.format([
-    { Attribute: { Intensity: "Bold" } },
+    { Attribute: { Intensity: intensity } },
+    { Foreground: { Color: modeColor } },
+    { Text: " \uE0B2" },
+    { Attribute: { Intensity: intensity } },
     { Foreground: { Color: textColor } },
     { Background: { Color: modeColor } },
-    { Text: ` ${name.toUpperCase()} MODE ` },
+    { Text: `  ${name.toUpperCase()} ` },
   ]);
 };
 
@@ -94,15 +109,22 @@ const setup = (modes: mode[], opts?: Partial<wezmodeOpts>) => {
         m.key,
         m.name,
         options.theme.hintColor,
-        options.theme.textColor
+        options.theme.textColor,
+        options.theme.intensity
       )
     )
     .join(` ${options.hintSeparator} `);
 
   state.modeTexts["normal"] = `${createPrefixText(
     options.modifier,
-    options.theme.normalModeColor
-  )} + ${modeHints} ${createModeText("normal", options.theme.modeTextColor, options.theme.normalModeColor)}`;
+    options.theme.normalModeColor,
+    options.theme.intensity
+  )} + ${modeHints} ${createModeText(
+    "normal",
+    options.theme.modeTextColor,
+    options.theme.normalModeColor,
+    options.theme.intensity
+  )}`;
 
   modes.forEach((m) => {
     state.keys.push({
@@ -124,7 +146,8 @@ const setup = (modes: mode[], opts?: Partial<wezmodeOpts>) => {
           k.key,
           k.desc,
           options.theme.hintColor,
-          options.theme.textColor
+          options.theme.textColor,
+          options.theme.intensity
         )
       )
       .join(` ${options.hintSeparator} `);
@@ -132,7 +155,8 @@ const setup = (modes: mode[], opts?: Partial<wezmodeOpts>) => {
     state.modeTexts[m.name] = `${actionHints} ${createModeText(
       m.name,
       options.theme.modeTextColor,
-      m.modeColor
+      m.modeColor,
+      options.theme.intensity
     )}`;
   });
 };

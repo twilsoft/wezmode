@@ -6,6 +6,7 @@ declare module "wezterm" {
     physicalKeys,
     modifierCombos,
     formatElement,
+    formatAttributeIntensity,
   } from "wezterm/coreTypes";
 
   import type * as actions from "wezterm/coreTypes/actionFuncs";
@@ -43,4 +44,6 @@ declare module "wezterm" {
     event: string,
     handler: eventHandler
   ) => void;
+
+  export type FormatAttributeIntensity = formatAttributeIntensity
 }
