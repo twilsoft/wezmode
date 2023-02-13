@@ -166,9 +166,7 @@ const getKeys = () => state.keys;
 const getKeyTables = () => state.keyTables;
 const handleRightStatusUpdate = () => {
   wezterm.on("update-right-status", (window) => {
-  	const ourPaneText = getModeText(window.active_key_table() ?? "normal");
-  	if (ourPaneText)
-    	window.set_right_status(ourPaneText);
+    window.set_right_status(getModeText(window.active_key_table() ?? "normal"));
   });
 };
 const mergeTables = mergeObjects;
