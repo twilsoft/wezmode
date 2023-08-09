@@ -109,6 +109,9 @@ wezmode.setup({
 })
 ```
 
+This plugin also supports `HYPER`, `HYP` & `MEH` as modifiers. Under the hood they expand to `CMD|ALT|CTRL|SHIFT` and `ALT|CTRL|SHIFT` respectively.
+The modifier hint will show the "shortcut" text rather than the expanded modifier.
+
 <a name="advanced.merging"/>
 
 ### Merging with existing keymaps

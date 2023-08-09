@@ -103,6 +103,19 @@ const createModeText = (
 const setup = (modes: mode[], opts?: Partial<wezmodeOpts>) => {
   const options = mergeObjects(defaultOpts, opts ?? {});
 
+  const expandedModifier = (() => {
+    switch(options.modifier) {
+      case "MEH":
+        return "ALT|CTRL|SHIFT"
+      case "HYP":
+      case "HYPER":
+        return "CMD|ALT|CTRL|SHIFT"
+      default: {
+        return options.modifier
+      }
+    } 
+  })()
+
   const modeHints = modes
     .map((m) =>
       createHintText(
@@ -129,7 +142,7 @@ const setup = (modes: mode[], opts?: Partial<wezmodeOpts>) => {
   modes.forEach((m) => {
     state.keys.push({
       key: m.key,
-      mods: options.modifier,
+      mods: expandedModifier,
       action: wezterm.action.ActivateKeyTable({
         name: m.name,
         one_shot: !!m.one_shot,

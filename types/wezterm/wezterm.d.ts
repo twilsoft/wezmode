@@ -16,7 +16,10 @@ declare module "wezterm" {
     active_key_table(): string;
   }
 
-  export type Modifier = modifierCombos;
+  type HyperKey = "HYPER" | "HYP"
+  type MehKey = "MEH"
+
+  export type Modifier = modifierCombos | HyperKey | MehKey;
   export type Key = allKeys | mappedKeys | physicalKeys;
 
   export type KeyBind = {
